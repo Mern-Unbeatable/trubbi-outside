@@ -13,6 +13,9 @@
   --color-text-muted: #c7c2bb;
   --color-border-subtle: #e3dbcf;
   --color-btn-secondary: #0b4f59;
+  --color-status-success: #2f9e44;
+  --color-status-warning: #f59f00;
+  --color-status-error: #e03131;
   --font-sans: 'Satoshi', sans-serif;
   --font-satoshi: 'Satoshi', sans-serif;
   --font-sarina: 'Sarina', cursive;
@@ -122,5 +125,26 @@
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
     }
+  }
+
+  body.admin-scroll {
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: auto;
+    min-height: 100%;
+  }
+
+  body.admin-scroll #smooth-wrapper,
+  body.admin-scroll #smooth-content {
+    position: static;
+    overflow: visible;
+    height: auto;
+    will-change: auto;
+  }
+
+  body.admin-scroll * {
+    animation-duration: revert !important;
+    animation-iteration-count: revert !important;
+    transition-duration: revert !important;
   }
 }

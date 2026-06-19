@@ -5,6 +5,7 @@ import { useGSAP } from '@gsap/react'
 export default function useAnimatedButtonHover(
   restShadow = '0 0 5px 1px rgba(0,0,0,0.09)',
   hoverShadow = '0 14px 32px rgba(255, 75, 85, 0.42)',
+  disabled = false,
 ) {
   const buttonRef = useRef(null)
   const shineRef = useRef(null)
@@ -13,7 +14,7 @@ export default function useAnimatedButtonHover(
     () => {
       const button = buttonRef.current
       const shine = shineRef.current
-      if (!button || !shine) return
+      if (!button || !shine || disabled) return
 
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
@@ -68,7 +69,7 @@ export default function useAnimatedButtonHover(
         button.removeEventListener('mousemove', onMove)
       }
     },
-    { scope: buttonRef },
+    { scope: buttonRef, dependencies: [disabled] },
   )
 
   return { buttonRef, shineRef }

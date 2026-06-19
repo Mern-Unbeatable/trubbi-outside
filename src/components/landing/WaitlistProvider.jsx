@@ -11,6 +11,7 @@ import { gsap } from 'gsap'
 import { ScrollSmoother } from 'gsap/ScrollSmoother'
 import { useGSAP } from '@gsap/react'
 import AnimatedActionButton from './AnimatedActionButton'
+import { api, ApiError } from '../../lib/api'
 
 const WaitlistContext = createContext(null)
 
@@ -30,6 +31,8 @@ function WaitlistModal({ open, onClose }) {
   const closeTweenRef = useRef(null)
   const isClosingRef = useRef(false)
   const [submitted, setSubmitted] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState('')
   const [form, setForm] = useState({
     firstName: '',
     lastName: '',
@@ -38,6 +41,8 @@ function WaitlistModal({ open, onClose }) {
 
   const resetForm = useCallback(() => {
     setSubmitted(false)
+    setSubmitting(false)
+    setError('')
     setForm({ firstName: '', lastName: '', email: '' })
   }, [])
 
@@ -162,9 +167,7 @@ function WaitlistModal({ open, onClose }) {
     return () => window.removeEventListener('keydown', onKeyDown)
   }, [open, closeModal])
 
-  const handleSubmit = (event) => {
-    event.preventDefault()
-
+  const showSuccess = () => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       setSubmitted(true)
       return
@@ -192,6 +195,25 @@ function WaitlistModal({ open, onClose }) {
     })
   }
 
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    setError('')
+    setSubmitting(true)
+
+    try {
+      await api.captureUser(form)
+      showSuccess()
+    } catch (err) {
+      const message =
+        err instanceof ApiError
+          ? err.message
+          : 'Something went wrong. Please try again.'
+      setError(message)
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
   if (!open) return null
 
   return createPortal(
@@ -201,7 +223,7 @@ function WaitlistModal({ open, onClose }) {
     >
       <div
         ref={backdropRef}
-        className="absolute inset-0 cursor-pointer bg-[#0a1f26]/70 backdrop-blur-[6px]"
+        className="absolute inset-0 cursor-pointer bg-[#004A5C]/80 backdrop-blur-[6px]"
         aria-hidden
         onClick={closeModal}
       />
@@ -303,12 +325,19 @@ function WaitlistModal({ open, onClose }) {
               />
             </label>
 
+            {error && (
+              <p className="waitlist-field rounded-xl border border-[#E03131]/30 bg-[#E03131]/10 px-4 py-3 text-sm text-[#c92a2a]">
+                {error}
+              </p>
+            )}
+
             <AnimatedActionButton
               type="submit"
+              disabled={submitting}
               className="waitlist-field h-10 w-full bg-brand-primary text-sm text-white shadow-[0_8px_24px_rgba(255,75,85,0.35)] md:h-12 md:text-base"
               restShadow="0 8px 24px rgba(255, 75, 85, 0.35)"
             >
-              Submit
+              {submitting ? 'Submitting…' : 'Submit'}
             </AnimatedActionButton>
           </form>
         ) : (
