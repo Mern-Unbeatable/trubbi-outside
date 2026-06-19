@@ -8,6 +8,7 @@ import ProtectedRoute from './components/admin/ProtectedRoute'
 import UserCapturePage from './pages/admin/UserCapturePage'
 import AnalyticsPage from './pages/admin/AnalyticsPage'
 import ProfilePage from './pages/admin/ProfilePage'
+import NotFoundPage from './pages/NotFoundPage'
 
 export default function App() {
   return (
@@ -24,8 +25,10 @@ export default function App() {
                 <Route path="user-capture" element={<UserCapturePage />} />
                 <Route path="analytics" element={<AnalyticsPage />} />
                 <Route path="profile" element={<ProfilePage />} />
+                <Route path="*" element={<NotFoundPage />} />
               </Route>
             </Route>
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </AuthProvider>
       </ToastProvider>
