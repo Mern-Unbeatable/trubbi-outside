@@ -254,7 +254,7 @@ function StepCard({ step, index, total }) {
 
   return (
     <article
-      className={`step-card relative w-full shrink-0 overflow-hidden bg-white max-md:border-b max-md:border-border-subtle max-md:last:border-b-0 md:max-lg:border-border-subtle md:max-lg:[&:nth-child(-n+2)]:border-b md:max-lg:[&:nth-child(3)]:border-b-0 md:max-lg:[&:nth-child(4)]:border-b-0 md:max-lg:[&:nth-child(odd)]:border-r lg:mx-0 lg:h-[547px] lg:w-[320px] lg:max-w-none lg:border-b-0 lg:border-r lg:last:border-r-0 ${
+      className={`step-card relative w-full shrink-0 overflow-hidden bg-white max-md:border-b max-md:border-border-subtle max-md:last:border-b-0 md:max-lg:border-border-subtle md:max-lg:[&:nth-child(-n+2)]:border-b md:max-lg:[&:nth-child(3)]:border-b-0 md:max-lg:[&:nth-child(4)]:border-b-0 md:max-lg:[&:nth-child(odd)]:border-r md:max-lg:[&:nth-child(odd)]:border-border-subtle lg:mx-0 lg:h-[547px] lg:w-[320px] lg:max-w-none lg:border-b-0 lg:border-r lg:border-border-subtle lg:last:border-r-0 ${
         isFirst ? 'lg:rounded-none lg:rounded-tl-3xl' : ''
       } ${isLast ? 'lg:rounded-none lg:rounded-br-3xl' : ''}`}
       data-step={index}

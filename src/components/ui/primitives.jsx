@@ -1,7 +1,7 @@
 export function SectionBadge({ children, variant = 'teal' }) {
   const variants = {
-    teal: 'border-btn-secondary text-brand-secondary',
-    red: 'border-brand-primary text-brand-primary',
+    teal: 'border-brand-secondary/25 text-brand-secondary',
+    red: 'border-brand-primary/35 text-brand-primary',
   }
 
   return (

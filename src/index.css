@@ -89,6 +89,20 @@
     will-change: auto;
   }
 
+  #features,
+  #how-it-works,
+  #faqs {
+    scroll-margin-top: 5.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    #features,
+    #how-it-works,
+    #faqs {
+      scroll-margin-top: 2rem;
+    }
+  }
+
   body.menu-open {
     overflow: hidden !important;
     position: fixed;

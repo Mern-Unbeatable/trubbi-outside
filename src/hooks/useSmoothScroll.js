@@ -35,6 +35,7 @@ export function useSmoothScroll(wrapperRef, contentRef) {
       if (prefersReducedMotion() || !isDesktopViewport()) {
         enableNativeScroll()
         ScrollTrigger.refresh()
+        scrollToInitialHash()
         return
       }
 
@@ -55,9 +56,7 @@ export function useSmoothScroll(wrapperRef, contentRef) {
       smootherRef.current = smoother
 
       if (window.location.hash) {
-        requestAnimationFrame(() => {
-          scrollToSection(window.location.hash)
-        })
+        scrollToInitialHash()
       } else {
         smoother.scrollTop(0)
       }
@@ -91,10 +90,10 @@ export function getScrollSmoother() {
   return ScrollSmoother.get()
 }
 
-export function scrollToSection(href) {
+export function scrollToSection(href, { instant = false } = {}) {
   if (typeof window === 'undefined') return
 
-  const smooth = !prefersReducedMotion()
+  const smooth = !instant && !prefersReducedMotion()
   const headerOffset = isDesktopViewport() ? 32 : 88
 
   if (!href || href === '#') {
@@ -112,19 +111,41 @@ export function scrollToSection(href) {
   if (!target) return
 
   const smoother = ScrollSmoother.get()
-  if (smoother) {
+  if (smoother && isDesktopViewport()) {
     smoother.scrollTo(target, smooth, `top ${headerOffset}px`)
     window.history.pushState(null, '', href)
     return
   }
 
-  const top =
-    target.getBoundingClientRect().top + window.scrollY - headerOffset
+  const scrollTop =
+    window.scrollY ||
+    document.documentElement.scrollTop ||
+    document.body.scrollTop ||
+    0
+
+  const top = Math.max(
+    0,
+    target.getBoundingClientRect().top + scrollTop - headerOffset,
+  )
 
   window.scrollTo({
     top,
     behavior: smooth ? 'smooth' : 'auto',
   })
 
+  document.documentElement.scrollTop = top
+
   window.history.pushState(null, '', href)
+}
+
+function scrollToInitialHash() {
+  const hash = window.location.hash
+  if (!hash) return
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      scrollToSection(hash, { instant: true })
+      ScrollTrigger.refresh()
+    })
+  })
 }

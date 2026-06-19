@@ -33,11 +33,10 @@ export default function LandingPage() {
     if (!window.location.hash) {
       window.scrollTo(0, 0)
       ScrollSmoother.get()?.scrollTop(0)
-    }
 
-    // Ensure mobile can scroll even before effects run
-    if (window.matchMedia('(max-width: 1023px)').matches) {
-      document.documentElement.scrollTop = 0
+      if (window.matchMedia('(max-width: 1023px)').matches) {
+        document.documentElement.scrollTop = 0
+      }
     }
   }, [])
 

@@ -60,7 +60,7 @@ export default function MobileNavMenu({ open, onClose }) {
   useEffect(() => {
     if (!open) return
 
-    const scrollY = window.scrollY
+    const scrollY = window.scrollY || document.documentElement.scrollTop || 0
     const body = document.body
 
     body.classList.add('menu-open')
@@ -79,15 +79,17 @@ export default function MobileNavMenu({ open, onClose }) {
       const pendingHref = pendingScrollRef.current
       pendingScrollRef.current = null
 
-      window.scrollTo(0, scrollY)
+      smoother?.paused(false)
 
       if (pendingHref) {
         requestAnimationFrame(() => {
-          scrollToSection(pendingHref)
+          requestAnimationFrame(() => {
+            scrollToSection(pendingHref)
+          })
         })
+      } else {
+        window.scrollTo(0, scrollY)
       }
-
-      smoother?.paused(false)
     }
   }, [open])
 
