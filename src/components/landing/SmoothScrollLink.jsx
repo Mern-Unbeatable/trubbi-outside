@@ -8,9 +8,9 @@ export default function SmoothScrollLink({
   ...props
 }) {
   const handleClick = (event) => {
-    if (!href?.startsWith('#')) return
-
     event.preventDefault()
+
+    if (!href?.startsWith('#')) return
 
     if (onNavigate) {
       onNavigate(href)
@@ -21,7 +21,7 @@ export default function SmoothScrollLink({
   }
 
   return (
-    <a href={href} className={className} onClick={handleClick} {...props}>
+    <a href="/" className={className} onClick={handleClick} {...props}>
       {children}
     </a>
   )

@@ -20,10 +20,21 @@ function disableNativeScroll() {
   document.body.classList.remove(NATIVE_SCROLL_CLASS)
 }
 
+export function getCleanUrl() {
+  return `${window.location.pathname}${window.location.search}`
+}
+
+export function stripHashFromUrl() {
+  if (!window.location.hash) return
+  window.history.replaceState(null, '', getCleanUrl())
+}
+
 export function useSmoothScroll(wrapperRef, contentRef) {
   const smootherRef = useRef(null)
 
   useLayoutEffect(() => {
+    stripHashFromUrl()
+
     let smoother = null
     let cancelled = false
 
@@ -35,7 +46,6 @@ export function useSmoothScroll(wrapperRef, contentRef) {
       if (prefersReducedMotion() || !isDesktopViewport()) {
         enableNativeScroll()
         ScrollTrigger.refresh()
-        scrollToInitialHash()
         return
       }
 
@@ -54,13 +64,7 @@ export function useSmoothScroll(wrapperRef, contentRef) {
       })
 
       smootherRef.current = smoother
-
-      if (window.location.hash) {
-        scrollToInitialHash()
-      } else {
-        smoother.scrollTop(0)
-      }
-
+      smoother.scrollTop(0)
       ScrollTrigger.refresh()
     }
 
@@ -98,12 +102,13 @@ export function scrollToSection(href, { instant = false } = {}) {
 
   if (!href || href === '#') {
     const smoother = ScrollSmoother.get()
-    if (smoother) {
+    if (smoother && isDesktopViewport()) {
       smoother.scrollTo(0, smooth)
     } else {
       window.scrollTo({ top: 0, behavior: smooth ? 'smooth' : 'auto' })
+      document.documentElement.scrollTop = 0
     }
-    window.history.pushState(null, '', window.location.pathname)
+    stripHashFromUrl()
     return
   }
 
@@ -113,39 +118,25 @@ export function scrollToSection(href, { instant = false } = {}) {
   const smoother = ScrollSmoother.get()
   if (smoother && isDesktopViewport()) {
     smoother.scrollTo(target, smooth, `top ${headerOffset}px`)
-    window.history.pushState(null, '', href)
-    return
+  } else {
+    const scrollTop =
+      window.scrollY ||
+      document.documentElement.scrollTop ||
+      document.body.scrollTop ||
+      0
+
+    const top = Math.max(
+      0,
+      target.getBoundingClientRect().top + scrollTop - headerOffset,
+    )
+
+    window.scrollTo({
+      top,
+      behavior: smooth ? 'smooth' : 'auto',
+    })
+
+    document.documentElement.scrollTop = top
   }
 
-  const scrollTop =
-    window.scrollY ||
-    document.documentElement.scrollTop ||
-    document.body.scrollTop ||
-    0
-
-  const top = Math.max(
-    0,
-    target.getBoundingClientRect().top + scrollTop - headerOffset,
-  )
-
-  window.scrollTo({
-    top,
-    behavior: smooth ? 'smooth' : 'auto',
-  })
-
-  document.documentElement.scrollTop = top
-
-  window.history.pushState(null, '', href)
-}
-
-function scrollToInitialHash() {
-  const hash = window.location.hash
-  if (!hash) return
-
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      scrollToSection(hash, { instant: true })
-      ScrollTrigger.refresh()
-    })
-  })
+  stripHashFromUrl()
 }

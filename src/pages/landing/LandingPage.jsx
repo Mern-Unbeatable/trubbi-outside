@@ -3,7 +3,7 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { ScrollSmoother } from 'gsap/ScrollSmoother'
 import { useLandingAnimations } from '../../hooks/useLandingAnimations'
-import { useSmoothScroll } from '../../hooks/useSmoothScroll'
+import { useSmoothScroll, stripHashFromUrl } from '../../hooks/useSmoothScroll'
 import { HeroSection } from '../../components/landing/HeroSection'
 import WaitlistProvider from '../../components/landing/WaitlistProvider'
 import ProblemSection from '../../components/landing/ProblemSection'
@@ -30,13 +30,12 @@ export default function LandingPage() {
       history.scrollRestoration = 'manual'
     }
 
-    if (!window.location.hash) {
-      window.scrollTo(0, 0)
-      ScrollSmoother.get()?.scrollTop(0)
+    stripHashFromUrl()
+    window.scrollTo(0, 0)
+    ScrollSmoother.get()?.scrollTop(0)
 
-      if (window.matchMedia('(max-width: 1023px)').matches) {
-        document.documentElement.scrollTop = 0
-      }
+    if (window.matchMedia('(max-width: 1023px)').matches) {
+      document.documentElement.scrollTop = 0
     }
   }, [])
 
