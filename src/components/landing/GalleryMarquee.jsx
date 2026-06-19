@@ -126,11 +126,11 @@ export default function GalleryMarquee() {
   return (
     <section
       ref={sectionRef}
-      className="overflow-hidden bg-bg-primary max-lg:pb-10 max-lg:pt-10 lg:py-16"
+      className="overflow-hidden bg-bg-primary py-10 lg:py-16"
     >
-      <div className="gallery-viewport relative w-full overflow-hidden max-lg:left-1/2 max-lg:w-screen max-lg:-translate-x-1/2 max-lg:px-0 lg:px-20">
+      <div className="gallery-viewport relative left-1/2 w-screen -translate-x-1/2 overflow-hidden">
         <div className="h-[333px] overflow-hidden md:h-[397px] lg:h-[525px] min-[1440px]:h-auto">
-          <div className="origin-top-left scale-[0.52] md:scale-[0.62] lg:scale-[0.82] min-[1440px]:scale-100">
+          <div className="origin-top-left scale-[0.52] max-[767px]:origin-top-left sm:scale-[0.62] lg:scale-[0.82] min-[1440px]:scale-100">
             <div
               ref={trackRef}
               className="gallery-track flex w-max items-start gap-[30px] will-change-transform"
