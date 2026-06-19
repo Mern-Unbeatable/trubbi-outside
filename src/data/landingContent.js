@@ -247,3 +247,10 @@ export const footerLinks = [
   { label: 'Live Collaboration', href: '#how-it-works' },
   { label: 'FAQs', href: '#faqs' },
 ]
+
+/** Paste any social URL — label + icon are detected automatically */
+export const footerSocialLinks = [
+  'https://www.instagram.com/trubbiai',
+  'https://www.tiktok.com/@trubbi.ai',
+  'https://www.youtube.com/@trubbi',
+]
