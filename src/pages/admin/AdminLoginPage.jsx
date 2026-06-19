@@ -137,7 +137,7 @@ export default function AdminLoginPage() {
         {isLocked && (
           <div className="mb-5 rounded-2xl border border-[#F59F00]/30 bg-[#F59F00]/10 px-4 py-3 text-sm text-[#9a6700]">
             Locked for {Math.floor(lockoutSeconds / 60)}:
-            {String(lockoutSeconds % 60).padStart(2, '0')} after 3 failed attempts.
+            {String(lockoutSeconds % 60).padStart(2, '0')} after 5 failed attempts.
           </div>
         )}
 
