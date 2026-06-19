@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://apiturbbi.macktechgroup.tech',
+        target: 'https://api-turbbi.maktechgroup.tech',
         changeOrigin: true,
       },
     },
