@@ -9,15 +9,16 @@ export class ApiError extends Error {
 }
 
 async function request(path, options = {}) {
+  const { credentials = 'include', ...fetchOptions } = options
   let response
 
   try {
     response = await fetch(`${API_BASE}${path}`, {
-      credentials: 'include',
-      ...options,
+      credentials,
+      ...fetchOptions,
       headers: {
         'Content-Type': 'application/json',
-        ...options.headers,
+        ...fetchOptions.headers,
       },
     })
   } catch {
@@ -27,7 +28,7 @@ async function request(path, options = {}) {
   const data = await response.json().catch(() => ({}))
 
   if (!response.ok) {
-    throw new ApiError(data.message || 'Something went wrong', {
+    throw new ApiError(data.message || `Request failed (${response.status})`, {
       locked: data.locked,
       attemptsLeft: data.attemptsLeft,
       lockoutSeconds: data.lockoutSeconds,
@@ -44,7 +45,9 @@ export const api = {
   logout: () => request('/auth/logout', { method: 'POST' }),
 
   getLoginStatus: (email) =>
-    request(`/auth/login-status?email=${encodeURIComponent(email)}`),
+    request(`/auth/login-status?email=${encodeURIComponent(email)}`, {
+      credentials: 'omit',
+    }),
 
   me: () => request('/auth/me'),
 
@@ -64,5 +67,9 @@ export const api = {
   getAnalytics: () => request('/admin/analytics'),
 
   captureUser: (body) =>
-    request('/user-capture', { method: 'POST', body: JSON.stringify(body) }),
+    request('/user-capture', {
+      method: 'POST',
+      body: JSON.stringify(body),
+      credentials: 'omit',
+    }),
 }
