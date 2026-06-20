@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
-  const siteUrl = (env.VITE_SITE_URL || 'https://turbbi.maktechgroup.tech').replace(/\/$/, '')
+  const siteUrl = (env.VITE_SITE_URL || 'https://api.trubbi.ai').replace(/\/$/, '')
 
   return {
     plugins: [
@@ -20,7 +20,7 @@ export default defineConfig(({ mode }) => {
     server: {
       proxy: {
         '/api': {
-          target: 'https://api-turbbi.maktechgroup.tech/',
+          target: 'https://api.trubbi.ai/',
           changeOrigin: true,
         },
       },
