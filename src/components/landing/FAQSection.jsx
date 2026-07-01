@@ -2,7 +2,6 @@ import { useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
-import { faqChevron } from '../../assets/landing'
 import { faqItems } from '../../data/landingContent'
 import { SCROLL_REVEAL_ONCE } from '../../hooks/useLandingAnimations'
 import { Container, SectionHeading } from '../ui/primitives'
@@ -46,11 +45,20 @@ function FAQItem({ item, index, isOpen, onToggle }) {
         <span className="text-lg font-bold text-[#221f1d] lg:text-[22px]">
           {index + 1}. {item.question}
         </span>
-        <img
-          src={faqChevron}
-          alt=""
+        <svg
+          viewBox="0 0 24 24"
+          aria-hidden="true"
           className={`h-6 w-6 shrink-0 transition ${isOpen ? 'rotate-180' : ''}`}
-        />
+        >
+          <path
+            d="M6 9L12 15L18 9"
+            fill="none"
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+          />
+        </svg>
       </button>
       <div ref={answerRef} className="h-0 overflow-hidden opacity-0">
         <div className="mb-6 rounded-3xl bg-bg-secondary px-6 py-6">
