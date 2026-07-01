@@ -43,6 +43,7 @@ import stepGraphicItinerary from './step-graphic-itinerary.png'
 import bookCheck from './book-check.svg'
 import bookArrow from './book-arrow.svg'
 import bookLocation from './book-location.svg'
+import faqChevron from './faq-chevron.svg'
 
 export {
   heroBg,
@@ -90,6 +91,7 @@ export {
   bookCheck,
   bookArrow,
   bookLocation,
+  faqChevron,
 }
 
 // Remote Figma assets for sections not yet downloaded locally

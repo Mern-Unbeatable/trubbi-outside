@@ -2,7 +2,7 @@ import { useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
-import { remoteAssets } from '../../assets/landing'
+import { faqChevron } from '../../assets/landing'
 import { faqItems } from '../../data/landingContent'
 import { SCROLL_REVEAL_ONCE } from '../../hooks/useLandingAnimations'
 import { Container, SectionHeading } from '../ui/primitives'
@@ -47,7 +47,7 @@ function FAQItem({ item, index, isOpen, onToggle }) {
           {index + 1}. {item.question}
         </span>
         <img
-          src={isOpen ? remoteAssets.faqOpen : remoteAssets.faqClose}
+          src={faqChevron}
           alt=""
           className={`h-6 w-6 shrink-0 transition ${isOpen ? 'rotate-180' : ''}`}
         />
